@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer><email>chris.richardson@fourc.eu</email></maintainer>  
+  <longdescription>
+	Qpid is Apache's implementation of the AMQP standard.
+  </longdescription>
+  <use>
+    <flag name='amqp'>Add support for the AMQP 1.0 specification support in addition to AMQP 0.10</flag>
+    <flag name='ha'>Add support for High Availability clusters</flag>
+    <flag name='legacystore'>Add support for a storage backend based on Berkeley DB</flag>
+    <flag name='linearstore'>Add support for a storage backend based on libaio</flag>
+    <flag name='msclfs'>Add support for a storage backend based on an MSSQL/CLFS hybrid</flag>
+    <flag name='rdma'>Add support for Low-latency RDMA features</flag>
+    <flag name='qpid-test'>Build the package's automated tests</flag>
+    <flag name='qpid-xml'>Add support for the xml exchange type</flag>
+    <flag name='service'>Install the qpid broker as a service</flag>
+  </use>
+</pkgmetadata>
