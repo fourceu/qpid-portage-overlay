@@ -22,8 +22,9 @@ Since this repo is not (yet) in the layman repositories, either use the "layman-
     </repo>
 </repositories>
 ```
-and finallay add the overly to layman:
+and finally, update layman and add the overly:
 ```Shell
+sudo layman -S
 sudo layman -a qpid-manual
 ```
 
