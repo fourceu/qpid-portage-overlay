@@ -102,6 +102,6 @@ pkg_postinst() {
 	if use python; then	
 		# Install the python bindings
 		cd ${WORKDIR}/${P}_build/proton-c/bindings/python/
-		"$(PYTHON)" setup.py install --root=${D} || die "Failed to install python bindings"
+		"$(PYTHON)" setup.py install || die "Failed to install python bindings"
 	fi
 }
