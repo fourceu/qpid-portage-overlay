@@ -96,7 +96,9 @@ src_compile() {
 
 src_install() {
         cmake-utils_src_install 
+}
 
+pkg_postinst() {
 	if use python; then	
 		# Install the python bindings
 		cd ${WORKDIR}/${P}_build/proton-c/bindings/python/
