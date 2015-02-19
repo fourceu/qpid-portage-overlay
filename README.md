@@ -7,7 +7,7 @@ Essentially, install layman:
 sudo emerge --ask app-portage/layman # One-off installation
 echo "source /var/lib/layman/make.conf" | sudo tee -a /etc/portage/make.conf > /dev/null # One-off configuration
 ```
-Since this repo is not (yet) in the layman repositories, either use the "layman-overlay-maker" utility to configure the overlay or manually create a file eg: /var/lib/layman/qpid-manual.xml containing:
+Since this repo is not (yet) in the layman repositories, either use the "layman-overlay-maker" utility to configure the overlay or manually create a file eg: /etc/layman/overlays/qpid-manual.xml containing:
 ```xml
 <?xml version="1.0" ?>
 <repositories version="1.0">
