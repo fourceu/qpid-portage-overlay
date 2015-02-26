@@ -9,7 +9,7 @@ inherit eutils cmake-utils python user
 DESCRIPTION="A message broker written in C++ that stores, routes, and forwards messages using AMQP."
 HOMEPAGE="http://qpid.apache.org/cpp/"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/${PV}/qpid-cpp-${PV}.tar.gz"
-LICENSE="Apache 2.0"
+LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
 IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml service"
 SLOT="0"
@@ -38,7 +38,7 @@ qpid-xml? (
 
 DEPEND="${RDEPEND}
 dev-libs/boost
->=dev-lang/ruby-1.9.3
+<dev-lang/ruby-2.0
 doc? ( app-doc/doxygen )
 "
 
