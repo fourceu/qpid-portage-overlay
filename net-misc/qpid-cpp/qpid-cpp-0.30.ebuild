@@ -37,7 +37,7 @@ qpid-xml? (
 
 DEPEND="${RDEPEND}
 dev-libs/boost
-amqp? ( >=dev-lang/ruby-1.9.3 )
+>=dev-lang/ruby-1.9.3
 doc? ( app-doc/doxygen )
 "
 
