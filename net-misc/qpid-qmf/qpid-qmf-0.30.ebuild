@@ -10,6 +10,8 @@ DESCRIPTION="A general-purpose management bus built on Qpid messaging."
 HOMEPAGE="http://qpid.apache.org/components/qmf"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/${PV}/qpid-qmf-${PV}.tar.gz"
 LICENSE="Apache 2.0"
+KEYWORDS="~x86 ~amd64"
+SLOT="0"
 
 DEPEND="
 "
@@ -20,9 +22,6 @@ RDEPEND="${DEPEND}
 
 INSTALL_DIR="tools/install-qpid.dir"
 SOURCE_DIR="qpid-qmf-${PV}"
-
-SLOT="0"
-KEYWORDS="ia64 x86 amd64-linux x86-linux"
 
 pkg_setup() {
     python_set_active_version 2

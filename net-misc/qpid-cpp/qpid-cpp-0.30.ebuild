@@ -8,10 +8,11 @@ inherit eutils cmake-utils python user
 
 DESCRIPTION="A message broker written in C++ that stores, routes, and forwards messages using AMQP."
 HOMEPAGE="http://qpid.apache.org/cpp/"
-LICENSE="Apache 2.0"
-IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml service"
-
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/${PV}/qpid-cpp-${PV}.tar.gz"
+LICENSE="Apache 2.0"
+KEYWORDS="~x86 ~amd64"
+IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml service"
+SLOT="0"
 
 RDEPEND="
 >=net-misc/qpid-proton-0.7
@@ -50,9 +51,6 @@ if use linearstore || use legacystore; then
 	fi
 fi
 
-SLOT="0"
-KEYWORDS="ia64 x86 amd64-linux x86-linux"
- 
 pkg_setup() {
 	python_set_active_version 2
 	python_pkg_setup

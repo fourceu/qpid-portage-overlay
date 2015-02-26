@@ -10,7 +10,9 @@ DESCRIPTION="A lightweight message router, written in C and built on Qpid Proton
 HOMEPAGE="http://qpid.apache.org/dispatch/"
 SRC_URI="ftp://ftp.mirrorservice.org/sites/ftp.apache.org/qpid/dispatch/${PV}/qpid-dispatch-${PV}.tar.gz" 
 LICENSE="Apache 2.0"
+KEYWORDS="~x86 ~amd64"
 IUSE="doc qpid-test"
+SLOT="0"
 
 RDEPEND="${DEPEND} 
 sys-libs/glibc
@@ -21,9 +23,6 @@ sys-libs/zlib
 "
 DEPEND="${RDEPEND}
 "
-
-SLOT="0"
-KEYWORDS="ia64 x86 amd64-linux x86-linux"
 
 pkg_setup() {
 	python_set_active_version 2

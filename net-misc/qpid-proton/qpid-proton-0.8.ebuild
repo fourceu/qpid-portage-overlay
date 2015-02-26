@@ -8,9 +8,11 @@ inherit eutils cmake-utils python
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="http://qpid.apache.org/proton/"
-LICENSE="Apache 2.0"
 SRC_URI="ftp://ftp.mirrorservice.org/sites/ftp.apache.org/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz" 
+LICENSE="Apache 2.0"
+KEYWORDS="~x86 ~amd64"
 IUSE="cxx java ruby perl php python qpid-test ruby"
+SLOT="0"
 
 RDEPEND="
 sys-libs/glibc
@@ -54,9 +56,6 @@ fi
 if [ -f /etc/os-release ]; then REGEX=".*\sID=(\w*).*"; OS_RELEASE=$(cat /etc/os-release); [[ $OS_RELEASE =~ $REGEX ]]; DISTRO=${BASH_REMATCH[1]}; else DISTRO="unknown"; fi
 MACHINE=$(uname -m)
 SPEC="${DISTRO}-${MACHINE}.cmake-spec"
-
-SLOT="0"
-KEYWORDS="ia64 x86 amd64-linux x86-linux"
 
 pkg_setup() {
 	python_set_active_version 2
