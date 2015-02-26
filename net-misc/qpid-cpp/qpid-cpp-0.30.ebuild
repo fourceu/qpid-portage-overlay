@@ -26,6 +26,7 @@ legacystore? (
 ssl? (
     dev-libs/nss
     dev-libs/nspr
+    dev-libs/cyrus-sasl
     )
 sasl? ( dev-libs/cyrus-sasl )
 qpid-xml? (
