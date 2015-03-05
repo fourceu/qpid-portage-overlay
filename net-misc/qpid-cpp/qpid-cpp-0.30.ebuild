@@ -38,7 +38,7 @@ qpid-xml? (
 
 DEPEND="${RDEPEND}
 dev-libs/boost
-<dev-lang/ruby-2.0
+virtual/rubygems
 doc? ( app-doc/doxygen )
 "
 
