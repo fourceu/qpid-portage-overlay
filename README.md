@@ -30,4 +30,9 @@ sudo layman -a qpid-manual
 
 That completes configuration. Packages can now be installed as normal via emerge.
 
-NB: In addition to running emerge --sync periodically, it is necessary to run layman -S to perform the same task for layman repositories.
+NB: In addition to running emerge --sync periodically, it is necessary to run layman -S to perform the same task for layman repositories. Alternatively, add the following content to /etc/portage/postsync.d/layman-sync and ensure the file is executable:
+```Shell
+#!/bin/bash
+[ -x /usr/bin/layman ] && /usr/bin/layman -S
+```
+
