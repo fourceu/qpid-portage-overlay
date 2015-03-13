@@ -1,15 +1,15 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
-PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils python-r1
+PYTHON_DEPEND="2"
+inherit eutils cmake-utils python
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="http://qpid.apache.org/proton/"
-SRC_URI="mirror://apache/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz"
-LICENSE="Apache-2.0"
+SRC_URI="ftp://ftp.mirrorservice.org/sites/ftp.apache.org/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz" 
+LICENSE="Apache 2.0"
 KEYWORDS="~x86 ~amd64"
 IUSE="cxx java ruby perl php python qpid-test ruby"
 SLOT="0"
@@ -28,7 +28,7 @@ DEPEND="${RDEPEND}
 java? (
 	dev-lang/swig
 	)
-perl? (
+perl? (	
 	dev-lang/swig
 	)
 php? (
@@ -67,7 +67,7 @@ pkg_setup() {
 }
 
 src_prepare (){
-	for patch in $(ls "${FILESDIR}/${PV}/*.patch" 2>/dev/null); do
+	for patch in $(ls ${FILESDIR}/${PV}/*.patch 2>/dev/null); do
 		echo "Applying patch '$patch'..."
 		epatch $patch
 	done
@@ -78,15 +78,15 @@ src_prepare (){
 }
 
 src_configure() {
-		mycmakeargs="${CMAKE_SWITCHES}"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build cxx WITH_CXX)"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build java JAVA)"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ruby RUBY)"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build perl PERL)"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build php PHP)"
-		mycmakeargs="${mycmakeargs} $(cmake-utils_use_build python PYTHON)"
-
-		cmake-utils_src_configure
+        mycmakeargs="${CMAKE_SWITCHES}"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build cxx WITH_CXX)"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build java JAVA)"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ruby RUBY)"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build perl PERL)"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build php PHP)"
+        mycmakeargs="${mycmakeargs} $(cmake-utils_use_build python PYTHON)"
+        
+        cmake-utils_src_configure	
 }
 
 src_compile() {
@@ -94,13 +94,13 @@ src_compile() {
 }
 
 src_install() {
-		cmake-utils_src_install
+        cmake-utils_src_install 
 }
 
 pkg_postinst() {
-	if use python; then
+	if use python; then	
 		# Install the python bindings
-		cd "${WORKDIR}/${P}_build/proton-c/bindings/python/"
+		cd ${WORKDIR}/${P}_build/proton-c/bindings/python/
 		"$(PYTHON)" setup.py install || die "Failed to install python bindings"
 	fi
 }
