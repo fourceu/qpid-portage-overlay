@@ -17,7 +17,7 @@ SLOT="0"
 RDEPEND="
 dev-libs/openssl
 sys-libs/zlib
-=net-misc/qpid-proton-0.8[python]
+>=net-misc/qpid-proton-0.9[python]
 "
 
 DEPEND="${RDEPEND}
@@ -38,8 +38,6 @@ src_prepare (){
 }
 
 src_configure() {
-#	mycmakeargs="-DPYTHON_INCLUDE_DIR=$(python_get_includedir) -DPYTHON_LIBRARY=$(python_get_library)"
-
 	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build doc DOCS)"
 	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build qpid-test TESTING)"
 
@@ -51,5 +49,5 @@ src_install() {
 
 	# Install the python package
 	cd "${WORKDIR}/${P}_build/python/"
-	"$(PYTHON)" setup.py install --root="${D}" || die "Failed to install python package"
+	"${PYTHON}" setup.py install --root="${D}" || die "Failed to install python package"
 }
