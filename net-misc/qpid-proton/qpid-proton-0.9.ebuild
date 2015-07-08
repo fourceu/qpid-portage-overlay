@@ -37,7 +37,6 @@ php? (
 python? (
 	dev-lang/swig
 	)
-
 ruby? (
 	dev-lang/swig
 	)
@@ -53,10 +52,6 @@ if use ruby; then
 	CMAKE_SWITCHES="$CMAKE_SWITCHES -DDEFAULT_RUBY_TESTING=on"
 fi
 
-if [ -f /etc/os-release ]; then REGEX=".*\sID=(\w*).*"; OS_RELEASE=$(cat /etc/os-release); [[ $OS_RELEASE =~ $REGEX ]]; DISTRO=${BASH_REMATCH[1]}; else DISTRO="unknown"; fi
-MACHINE=$(uname -m)
-SPEC="${DISTRO}-${MACHINE}.cmake-spec"
-
 pkg_setup() {
 	python_set_active_version 2
 	python_pkg_setup
@@ -67,11 +62,6 @@ pkg_setup() {
 }
 
 src_prepare (){
-	for patch in $(ls "${FILESDIR}/${PV}/*.patch" 2>/dev/null); do
-		echo "Applying patch '$patch'..."
-		epatch $patch
-	done
-
 	if use python; then
 		python_convert_shebangs -r 2 proton-c/bindings/python
 	fi
@@ -92,7 +82,8 @@ src_configure() {
 pkg_postinst() {
 	if use python; then
 		# Install the python bindings
-		cd "${WORKDIR}/${P}_build/proton-c/bindings/python/"
+		cd "${WORKDIR}/${P}/proton-c/bindings/python/"
+		touch proton/cproton.i
 		"$(PYTHON)" setup.py install || die "Failed to install python bindings"
 	fi
 }
