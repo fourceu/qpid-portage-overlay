@@ -8,7 +8,7 @@ inherit eutils cmake-utils python
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="http://qpid.apache.org/proton/"
-SRC_URI="mirror://apache/qpid/proton/${PV}/qpid-proton-0.9.1.tar.gz"
+SRC_URI="mirror://apache/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
 IUSE="cxx java ruby perl php python qpid-test ruby"
@@ -37,7 +37,6 @@ php? (
 python? (
 	dev-lang/swig
 	)
-
 ruby? (
 	dev-lang/swig
 	)
@@ -54,22 +53,21 @@ if use ruby; then
 fi
 
 pkg_setup() {
-	if use python; then
-		python_set_active_version 2
-		python_pkg_setup
+	python_set_active_version 2
+	python_pkg_setup
 
-		# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
-		# We will fix this later in the src_install stage.
-		CMAKE_SWITCHES="$CMAKE_SWITCHES -DPYTHON_INCLUDE_DIR=$(python_get_includedir) -DPYTHON_LIBRARY=$(python_get_library)"
-	fi
+	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
+	# We will fix this later in the src_install stage.
+	CMAKE_SWITCHES="$CMAKE_SWITCHES -DPYTHON_INCLUDE_DIR=$(python_get_includedir) -DPYTHON_LIBRARY=$(python_get_library)"
 }
 
 src_unpack() {
+	# This is a hack for the invalid unpack location of the source archive. Should be removed from future ebuilds.
 	unpack ${A}
 	mv "${WORKDIR}/qpid-proton-0.9.1-rc1" "${WORKDIR}/${P}"
 }
 
-src_prepare() {
+src_prepare (){
 	if use python; then
 		python_convert_shebangs -r 2 proton-c/bindings/python
 	fi
