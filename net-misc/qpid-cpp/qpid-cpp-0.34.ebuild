@@ -89,9 +89,6 @@ src_install() {
 	cmake-utils_src_install
 
 	if use qpid-service; then
-		#sed 's/QPID_CONFIG=.*/QPID_CONFIG=\/etc\/qpidd\.conf/' -i "${WORKDIR}/${P}_build/etc/qpidd"
-		#sed 's/source.*functions/source \/etc\/init.d\/functions.sh/' -i "${WORKDIR}/${P}_build/etc/qpidd"
-
 		newinitd "${WORKDIR}/${P}/etc/qpidd.gentoo" qpidd
 		newconfd "${WORKDIR}/${P}/etc/conf.d-qpidd.gentoo" qpidd
 		if use ha; then
