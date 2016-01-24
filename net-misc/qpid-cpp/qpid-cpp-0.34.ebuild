@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
@@ -18,11 +18,11 @@ RDEPEND="
 >=net-misc/qpid-proton-0.8
 linearstore? (
 	dev-libs/libaio
-	sys-libs/db[cxx]
+	sys-libs/db:*[cxx]
 	)
 legacystore? (
 	dev-libs/libaio
-	sys-libs/db[cxx]
+	sys-libs/db:*[cxx]
 	)
 ssl? (
 	dev-libs/nss
@@ -61,7 +61,7 @@ pkg_setup() {
 }
 
 src_prepare (){
-        epatch "${FILESDIR}/${P}-gentoo-init-scripts.patch"
+	epatch "${FILESDIR}/${P}-gentoo-init-scripts.patch"
 }
 
 src_configure() {
