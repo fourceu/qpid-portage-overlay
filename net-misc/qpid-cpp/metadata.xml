@@ -14,6 +14,6 @@
     <flag name='rdma'>Add support for Low-latency RDMA features</flag>
     <flag name='qpid-test'>Build the package's automated tests</flag>
     <flag name='qpid-xml'>Add support for the xml exchange type</flag>
-    <flag name='service'>Install the qpid broker as a service</flag>
+    <flag name='qpid-service'>Install the qpid broker as a service</flag>
   </use>
 </pkgmetadata>

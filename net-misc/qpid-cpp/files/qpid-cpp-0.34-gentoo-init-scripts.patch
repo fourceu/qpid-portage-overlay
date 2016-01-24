@@ -1,0 +1,70 @@
+diff -rupN qpid-cpp-0.34-vanilla/etc/conf.d-qpidd.gentoo qpid-cpp-0.34-gentoo/etc/conf.d-qpidd.gentoo
+--- etc/conf.d-qpidd.gentoo	1970-01-01 01:00:00.000000000 +0100
++++ etc/conf.d-qpidd.gentoo	2016-01-25 20:06:21.334482373 +0000
+@@ -0,0 +1,6 @@
++QPIDD_BIN=/usr/sbin/qpidd
++QPIDD_CONF=/etc/qpidd.conf
++QPIDD_PIDFILE=/var/run/qpidd.pid
++QPIDD_USER=qpidd
++QPIDD_GROUP=qpidd
++
+diff -rupN qpid-cpp-0.34-vanilla/etc/qpidd.conf.gentoo qpid-cpp-0.34-gentoo/etc/qpidd.conf.gentoo
+--- etc/qpidd.conf.gentoo	1970-01-01 01:00:00.000000000 +0100
++++ etc/qpidd.conf.gentoo	2016-01-25 20:06:43.293910371 +0000
+@@ -0,0 +1,31 @@
++#
++# Licensed to the Apache Software Foundation (ASF) under one
++# or more contributor license agreements.  See the NOTICE file
++# distributed with this work for additional information
++# regarding copyright ownership.  The ASF licenses this file
++# to you under the Apache License, Version 2.0 (the
++# "License"); you may not use this file except in compliance
++# with the License.  You may obtain a copy of the License at
++#
++#   http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing,
++# software distributed under the License is distributed on an
++# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++# KIND, either express or implied.  See the License for the
++# specific language governing permissions and limitations
++# under the License.
++#
++# Configuration file for qpidd. Entries are of the form:
++#   name=value
++#
++# (Note: no spaces on either side of '=').
++# Run "qpidd --help" or see "man qpidd" for more details.
++
++# NB (gentoo-specific): DO NOT set the "pidfile" option here as it will conflict with the init script.
++# If required, modify the setting in /etc/conf.d/qpidd.
++
++# (gentoo-specific) These locations should be writable by the user/group specified in /etc/conf.d (default: qpidd:qpidd)
++data-dir=/var/lib/qpidd/data
++pid-dir=/var/run/qpidd.pid.d/
++
+diff -rupN qpid-cpp-0.34-vanilla/etc/qpidd.gentoo qpid-cpp-0.34-gentoo/etc/qpidd.gentoo
+--- etc/qpidd.gentoo	1970-01-01 01:00:00.000000000 +0100
++++ etc/qpidd.gentoo	2016-01-25 20:05:52.279239224 +0000
+@@ -0,0 +1,21 @@
++#!/sbin/runscript
++# Copyright 1999-2016 Gentoo Foundation
++# Distributed under the terms of the GNU General Public License v2
++# $Header: $
++
++name="Apache Qpidd"
++
++depend() {
++	need localmount #434774
++	after net
++}
++
++start() {
++	ebegin "Starting $name"
++	start-stop-daemon --start --exec ${QPIDD_BIN} --user ${QPIDD_USER}:${QPIDD_GROUP} --pidfile ${QPIDD_PIDFILE} -- --config $QPIDD_CONF --pidfile ${QPIDD_PIDFILE} -d
++}
++
++stop() {
++	ebegin "Stopping $name"
++	${QPIDD_BIN} --config $QPIDD_CONF --pidfile ${QPIDD_PIDFILE} -q
++}
