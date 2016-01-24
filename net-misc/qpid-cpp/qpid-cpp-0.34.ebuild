@@ -11,7 +11,7 @@ HOMEPAGE="http://qpid.apache.org/cpp/"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
-IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml service"
+IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml qpid-service"
 SLOT="0"
 
 RDEPEND="
@@ -54,17 +54,14 @@ fi
 pkg_setup() {
 	python-single-r1_pkg_setup
 
-	if use service; then
+	if use qpid-service; then
 		enewgroup qpidd
 		enewuser qpidd -1 -1 -1 "qpidd"
 	fi
 }
 
 src_prepare (){
-	for patch in $(ls "${FILESDIR}/${PV}/*.patch" 2>/dev/null); do
-		echo "Applying patch '$patch'..."
-		epatch $patch
-	done
+        epatch "${FILESDIR}/${P}-gentoo-init-scripts.patch"
 }
 
 src_configure() {
@@ -91,19 +88,19 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	if use service; then
-		sed 's/QPID_CONFIG=.*/QPID_CONFIG=\/etc\/qpidd\.conf/' -i "${WORKDIR}/${P}_build/etc/qpidd"
-		sed 's/source.*functions/source \/etc\/init.d\/functions.sh/' -i "${WORKDIR}/${P}_build/etc/qpidd"
+	if use qpid-service; then
+		#sed 's/QPID_CONFIG=.*/QPID_CONFIG=\/etc\/qpidd\.conf/' -i "${WORKDIR}/${P}_build/etc/qpidd"
+		#sed 's/source.*functions/source \/etc\/init.d\/functions.sh/' -i "${WORKDIR}/${P}_build/etc/qpidd"
 
-		newinitd "${WORKDIR}/${P}_build/etc/qpidd" qpidd
+		newinitd "${WORKDIR}/${P}/etc/qpidd.gentoo" qpidd
+		newconfd "${WORKDIR}/${P}/etc/conf.d-qpidd.gentoo" qpidd
 		if use ha; then
 			newinitd "${WORKDIR}/${P}_build/etc/qpidd-primary" qpidd-primary
 		fi
 
-		ETC_DIR="${ROOT}/etc"
-		insinto "${ETC_DIR}"
-		doins "${WORKDIR}/${P}/etc/qpidd.conf"
-		dodir -g qpidd -o qpidd -m 754 /var/lib/qpidd
-		keepdir /var/lib/qpidd
+		dodir /var/lib/qpidd/data
+		fowners qpidd:qpidd /var/lib/qpidd/data
+		insinto "/etc"
+		newins "${WORKDIR}/${P}/etc/qpidd.conf.gentoo" "qpidd.conf"
 	fi
 }

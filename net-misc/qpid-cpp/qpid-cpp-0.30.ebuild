@@ -11,7 +11,7 @@ HOMEPAGE="http://qpid.apache.org/cpp/"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
-IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml service"
+IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml qpid-service"
 SLOT="0"
 
 RDEPEND="
@@ -54,7 +54,7 @@ fi
 pkg_setup() {
 	python-single-r1_pkg_setup
 
-	if use service; then
+	if use qpid-service; then
 		enewgroup qpidd
 		enewuser qpidd -1 -1 -1 "qpidd"
 	fi
@@ -91,7 +91,7 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	if use service; then
+	if use qpid-service; then
 		sed 's/QPID_CONFIG=.*/QPID_CONFIG=\/etc\/qpidd\.conf/' -i "${WORKDIR}/${P}_build/etc/qpidd"
 		sed 's/source.*functions/source \/etc\/init.d\/functions.sh/' -i "${WORKDIR}/${P}_build/etc/qpidd"
 
