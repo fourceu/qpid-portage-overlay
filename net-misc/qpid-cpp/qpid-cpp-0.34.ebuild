@@ -16,6 +16,7 @@ SLOT="0"
 
 RDEPEND="
 >=net-misc/qpid-proton-0.8
+<net-misc/qpid-proton-0.10
 linearstore? (
 	dev-libs/libaio
 	sys-libs/db:*[cxx]
