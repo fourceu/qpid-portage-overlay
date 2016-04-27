@@ -59,17 +59,17 @@ diff -rupN qpid-cpp-0.34-vanilla/etc/qpidd.gentoo qpid-cpp-0.34-gentoo/etc/qpidd
 +start() {
 +	ebegin "Starting $name"
 +
-+        pidfile=$(cat $QPIDD_CONF | grep ^pid-file | awk -F = '{print $2}')
-+        if [ ! -z $pidfile ]; then 
-+                touch $pidfile
-+                chown ${QPIDD_USER}:${QPIDD_GROUP} $pidfile
-+        fi
++	pidfile=$(awk -F = '$1 == "pidfile" {print $2}' < $QPIDD_CONF)
++	if [ ! -z $pidfile ]; then
++	touch $pidfile
++		chown ${QPIDD_USER}:${QPIDD_GROUP} $pidfile
++	fi
 +
-+        piddir=$(cat $QPIDD_CONF | grep ^pid-dir | awk -F = '{print $2}')
-+        if [ ! -z piddir ]; then
-+                mkdir -p $piddir
-+                chown -R ${QPIDD_USER}:${QPIDD_GROUP} $piddir
-+        fi
++	piddir=$(awk -F = '$1 == "pid-dir" {print $2}' < $QPIDD_CONF)
++	if [ ! -z piddir ]; then
++		mkdir -p $piddir
++		chown -R ${QPIDD_USER}:${QPIDD_GROUP} $piddir
++	fi
 +
 +	start-stop-daemon --start --exec ${QPIDD_BIN} --user ${QPIDD_USER}:${QPIDD_GROUP} -- --config $QPIDD_CONF -d
 +}
