@@ -61,10 +61,6 @@ pkg_setup() {
 	fi
 }
 
-src_prepare (){
-	epatch "${FILESDIR}/${P}-gentoo-init-scripts.patch"
-}
-
 src_configure() {
 	mycmakeargs="${CMAKE_SWITCHES}"
 	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build acl ACL)"
