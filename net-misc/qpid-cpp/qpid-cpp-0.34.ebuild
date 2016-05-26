@@ -46,7 +46,7 @@ doc? ( app-doc/doxygen )
 CMAKE_SWITCHES=""
 if use linearstore || use legacystore; then
 	# Berkeley DB include directory can be in unexpected places - try to find it here
-	DB_INCLUDE=$(find /usr/include -type d -name 'db*' -print -quit)
+	DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
 	if [ ! -z "$DB_INCLUDE" ]; then
 		CMAKE_SWITCHES="$CMAKE_SWITCHES -DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
 	fi
