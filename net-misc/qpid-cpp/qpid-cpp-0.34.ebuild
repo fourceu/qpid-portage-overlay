@@ -6,7 +6,7 @@ EAPI=5
 PYTHON_COMPAT=( python2_7 )
 inherit eutils cmake-utils python-single-r1 user
 
-DESCRIPTION="A message broker written in C++ that stores, routes, and forwards messages using AMQP."
+DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="http://qpid.apache.org/cpp/"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
@@ -90,15 +90,13 @@ src_install() {
 	cmake-utils_src_install
 
 	if use qpid-service; then
-		newinitd "${WORKDIR}/${P}/etc/qpidd.gentoo" qpidd
-		newconfd "${WORKDIR}/${P}/etc/conf.d-qpidd.gentoo" qpidd
+		newinitd "${FILESDIR}/qpidd-init.d-gentoo-v1" qpidd
+		newconfd "${FILESDIR}/qpidd-conf.d-gentoo-v1" qpidd
 		if use ha; then
 			newinitd "${WORKDIR}/${P}_build/etc/qpidd-primary" qpidd-primary
 		fi
 
-		dodir /var/lib/qpidd/data
-		fowners qpidd:qpidd /var/lib/qpidd/data
 		insinto "/etc"
-		newins "${WORKDIR}/${P}/etc/qpidd.conf.gentoo" "qpidd.conf"
+		newins "${FILESDIR}/qpidd.conf.default-gentoo-v1" "qpidd.conf"
 	fi
 }

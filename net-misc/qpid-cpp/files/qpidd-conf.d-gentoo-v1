@@ -1,0 +1,5 @@
+QPIDD_BIN=/usr/sbin/qpidd
+QPIDD_CONF=/etc/qpidd.conf
+QPIDD_USER=qpidd
+QPIDD_GROUP=qpidd
+
