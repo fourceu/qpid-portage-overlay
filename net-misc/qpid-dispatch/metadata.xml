@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer type="project"><email>chris.richardson@fourc.eu</email></maintainer>  
+  <maintainer type="person">
+    <email>chris.richardson@fourc.eu</email>
+  </maintainer>
   <longdescription>
 	A lightweight message router, written in C and built on Qpid Proton, that provides flexible and scalable interconnect between AMQP endpoints or between endpoints and brokers.
   </longdescription>
