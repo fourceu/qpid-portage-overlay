@@ -40,22 +40,11 @@ ruby? (
 	)
 "
 
-if use java; then
-	ewarn "WARNING: Building with \"java\" use flag, but this ebuild does not declare an explicit JDK dependency."
-	ewarn "You will need to install one manually."
-fi
-
-CMAKE_SWITCHES="$CMAKE_SWITCHES -DCMAKE_CXX_FLAGS=-Wno-error=long-long -DCMAKE_SKIP_RPATH=On"
-if use ruby; then
-	CMAKE_SWITCHES="$CMAKE_SWITCHES -DDEFAULT_RUBY_TESTING=on"
-fi
-
 pkg_setup() {
 	python-single-r1_pkg_setup
 
 	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
 	# We will fix this later in the src_install stage.
-	CMAKE_SWITCHES="$CMAKE_SWITCHES -DPYTHON_INCLUDE_DIR=$(python_get_includedir) -DPYTHON_LIBRARY=$(python_get_library)"
 }
 
 src_prepare (){
@@ -65,6 +54,16 @@ src_prepare (){
 }
 
 src_configure() {
+	if use java; then
+		ewarn "WARNING: Building with \"java\" use flag, but this ebuild does not declare an explicit JDK dependency."
+		ewarn "You will need to install one manually."
+	fi
+
+	CMAKE_SWITCHES="-DCMAKE_CXX_FLAGS=-Wno-error=long-long"
+	if use ruby; then
+		CMAKE_SWITCHES="$CMAKE_SWITCHES -DDEFAULT_RUBY_TESTING=on"
+	fi
+
 	mycmakeargs="${CMAKE_SWITCHES}"
 	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build cxx WITH_CXX)"
 	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build java JAVA)"

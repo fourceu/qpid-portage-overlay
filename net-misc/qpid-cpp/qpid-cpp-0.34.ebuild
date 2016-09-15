@@ -43,15 +43,6 @@ virtual/rubygems
 doc? ( app-doc/doxygen )
 "
 
-CMAKE_SWITCHES=""
-if use linearstore || use legacystore; then
-	# Berkeley DB include directory can be in unexpected places - try to find it here
-	DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
-	if [ ! -z "$DB_INCLUDE" ]; then
-		CMAKE_SWITCHES="$CMAKE_SWITCHES -DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
-	fi
-fi
-
 pkg_setup() {
 	python-single-r1_pkg_setup
 
@@ -62,22 +53,31 @@ pkg_setup() {
 }
 
 src_configure() {
-	mycmakeargs="${CMAKE_SWITCHES}"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build acl ACL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build amqp AMQP)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build doc DOCS)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ha HA)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build legacystore LEGACYSTORE)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build linearstore LINEARSTORE)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build msclfs MSCLFS)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build mssql MSSQL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build perl BINDING_PERL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build rdma RDMA)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ruby BINDING_RUBY)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build sasl SASL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ssl SSL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build qpid-test TESTING)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build qpid-xml XML)"
+	if use linearstore || use legacystore; then
+		# Berkeley DB include directory can be in unexpected places - try to find it here
+		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
+		if [ ! -z "$DB_INCLUDE" ]; then
+			CMAKE_SWITCHES="-DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
+		fi
+	fi
+
+	local mycmakeargs=($CMAKE_SWITCHES
+		$(cmake-utils_use_build acl ACL)
+		$(cmake-utils_use_build amqp AMQP)
+		$(cmake-utils_use_build doc DOCS)
+		$(cmake-utils_use_build ha HA)
+		$(cmake-utils_use_build legacystore LEGACYSTORE)
+		$(cmake-utils_use_build linearstore LINEARSTORE)
+		$(cmake-utils_use_build msclfs MSCLFS)
+		$(cmake-utils_use_build mssql MSSQL)
+		$(cmake-utils_use_build perl BINDING_PERL)
+		$(cmake-utils_use_build rdma RDMA)
+		$(cmake-utils_use_build ruby BINDING_RUBY)
+		$(cmake-utils_use_build sasl SASL)
+		$(cmake-utils_use_build ssl SSL)
+		$(cmake-utils_use_build qpid-test TESTING)
+		$(cmake-utils_use_build qpid-xml XML)
+	)
 
 	cmake-utils_src_configure
 }

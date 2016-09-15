@@ -42,15 +42,6 @@ ruby? (
 	)
 "
 
-if use java; then
-	ewarn "WARNING: Building with \"java\" use flag, but this ebuild does not declare an explicit JDK dependency."
-	ewarn "You will need to install one manually."
-fi
-
-if use ruby; then
-	CMAKE_SWITCHES="-DDEFAULT_RUBY_TESTING=on"
-fi
-
 pkg_setup() {
 	python-single-r1_pkg_setup
 
@@ -71,6 +62,15 @@ src_prepare (){
 }
 
 src_configure() {
+	if use java; then
+		ewarn "WARNING: Building with \"java\" use flag, but this ebuild does not declare an explicit JDK dependency."
+		ewarn "You will need to install one manually."
+	fi
+
+	if use ruby; then
+		CMAKE_SWITCHES="-DDEFAULT_RUBY_TESTING=on"
+	fi
+
 	local mycmakeargs=( $CMAKE_SWITCHES
 		-DCMAKE_CXX_FLAGS="-Wno-error=long-long -Wno-error=unused-result"
 		$(cmake-utils_use_build cxx WITH_CXX)
