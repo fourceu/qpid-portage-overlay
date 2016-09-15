@@ -1,10 +1,10 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
-PYTHON_DEPEND="2"
-inherit eutils cmake-utils python
+PYTHON_COMPAT=( python2_7 )
+inherit eutils cmake-utils python-single-r1
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="http://qpid.apache.org/proton/"
@@ -15,12 +15,11 @@ IUSE="cxx java ruby perl php python qpid-test ruby"
 SLOT="0"
 
 RDEPEND="
-sys-libs/glibc
 sys-apps/util-linux
-dev-libs/openssl
+dev-libs/openssl:*
 sys-libs/zlib
 php? (
-	dev-lang/php
+	dev-lang/php:*
 	)
 "
 
@@ -53,8 +52,7 @@ if use ruby; then
 fi
 
 pkg_setup() {
-	python_set_active_version 2
-	python_pkg_setup
+	python-single-r1_pkg_setup
 
 	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
 	# We will fix this later in the src_install stage.
@@ -69,7 +67,7 @@ src_unpack() {
 
 src_prepare (){
 	if use python; then
-		python_convert_shebangs -r 2 proton-c/bindings/python
+		python_fix_shebang proton-c/bindings/python
 	fi
 }
 

@@ -6,7 +6,7 @@ EAPI=5
 PYTHON_COMPAT=( python2_7 )
 inherit eutils cmake-utils python-single-r1 user
 
-DESCRIPTION="A message broker written in C++ that stores, routes, and forwards messages using AMQP."
+DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="http://qpid.apache.org/cpp/"
 SRC_URI="https://dist.apache.org/repos/dist/release/qpid/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"

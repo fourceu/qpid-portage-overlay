@@ -6,7 +6,7 @@ EAPI=5
 PYTHON_COMPAT=( python2_7 )
 inherit eutils cmake-utils python-single-r1
 
-DESCRIPTION="A lightweight message router that provides flexible interconnect between AMQP endpoints"
+DESCRIPTION="A lightweight message router that provides interconnect between AMQP endpoints"
 HOMEPAGE="http://qpid.apache.org/dispatch/"
 SRC_URI="mirror://apache/qpid/dispatch/${PV}/qpid-dispatch-${PV}.tar.gz"
 LICENSE="Apache-2.0"

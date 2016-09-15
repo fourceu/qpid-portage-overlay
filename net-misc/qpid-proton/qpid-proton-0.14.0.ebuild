@@ -19,7 +19,9 @@ sys-apps/util-linux
 !libressl? ( dev-libs/openssl:* )
 libressl? ( dev-libs/libressl:* )
 sys-libs/zlib
-php? ( dev-lang/php:* )
+php? (
+	dev-lang/php:*
+	)
 "
 
 DEPEND="${RDEPEND}
@@ -45,17 +47,17 @@ if use java; then
 	ewarn "You will need to install one manually."
 fi
 
-CMAKE_SWITCHES="$CMAKE_SWITCHES -DCMAKE_CXX_FLAGS=-Wno-error=long-long -DCMAKE_SKIP_RPATH=On"
 if use ruby; then
-	CMAKE_SWITCHES="$CMAKE_SWITCHES -DDEFAULT_RUBY_TESTING=on"
+	CMAKE_SWITCHES="-DDEFAULT_RUBY_TESTING=on"
 fi
 
 pkg_setup() {
-	python-single-r1_pkg_setup
+	if use python; then
+		python-single-r1_pkg_setup
+	fi
 
 	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
 	# We will fix this later in the src_install stage.
-	CMAKE_SWITCHES="$CMAKE_SWITCHES -DPYTHON_INCLUDE_DIR=$(python_get_includedir) -DPYTHON_LIBRARY=$(python_get_library)"
 }
 
 src_prepare (){
@@ -65,13 +67,15 @@ src_prepare (){
 }
 
 src_configure() {
-	mycmakeargs="${CMAKE_SWITCHES}"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build cxx WITH_CXX)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build java JAVA)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build ruby RUBY)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build perl PERL)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build php PHP)"
-	mycmakeargs="${mycmakeargs} $(cmake-utils_use_build python PYTHON)"
+	local mycmakeargs=( $CMAKE_SWITCHES
+		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result -Wno-error=long-long"
+		$(cmake-utils_use_build cxx WITH_CXX)
+		$(cmake-utils_use_build java JAVA)
+		$(cmake-utils_use_build ruby RUBY)
+		$(cmake-utils_use_build perl PERL)
+		$(cmake-utils_use_build php PHP)
+		$(cmake-utils_use_build python PYTHON)
+	)
 
 	cmake-utils_src_configure
 }
@@ -80,6 +84,6 @@ pkg_postinst() {
 	if use python; then
 		# Install the python bindings
 		cd "${WORKDIR}/${P}/proton-c/bindings/python/"
-		"$(PYTHON)" setup.py install || die "Failed to install python bindings"
+		"${PYTHON}" setup.py install || die "Failed to install python bindings"
 	fi
 }
