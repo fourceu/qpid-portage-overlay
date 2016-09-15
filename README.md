@@ -1,7 +1,9 @@
 # qpid-portage-overlay
+[![Build Status](https://travis-ci.org/fourceu/qpid-portage-overlay.svg?branch=develop)](https://travis-ci.org/fourceu/qpid-portage-overlay)
+
 This overlay contains Portage ebuild files for the Qpid projects: qpid-proton, qpid-cpp (broker), qpid-dispatch (router), qpid-python, qpid-qmf and qpid-tools (python)
 
-# Usage method 1 - /etc/portage/repos.conf directory.
+## Usage method 1 - repos.conf directory
 This method uses the updated Portage configuration in which /etc/portage/repos.conf is a directory. If repos.conf is a file, either update the portage configuration or use layman as described below.
 Place a repo description file in the /etc/portage/repos.conf directory containing the following:
 ```ini
@@ -12,7 +14,7 @@ location=/var/lib/portage-repos/Apache-Qpid
 ```
 An emerge --sync will now include this repository.
 
-# Useage method 2 - layman
+## Useage method 2 - layman
 
 How to use layman: http://wiki.gentoo.org/wiki/Layman
 Essentially, install layman:
