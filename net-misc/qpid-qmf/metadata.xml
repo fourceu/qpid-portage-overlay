@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer><email>chris.richardson@fourc.eu</email></maintainer>  
+  <maintainer type="person">
+    <email>chris.richardson@fourc.eu</email>
+  </maintainer>
   <longdescription>
 	The Qpid Management Framework is a general-purpose management bus built on Qpid messaging. It takes advantage of the scalability, security, and rich capabilities of Qpid to provide flexible and easy-to-use manageability 
 to a large set of applications.

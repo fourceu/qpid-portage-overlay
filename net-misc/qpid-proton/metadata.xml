@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer><email>chris.richardson@fourc.eu</email></maintainer>  
+  <maintainer type="person">
+    <email>chris.richardson@fourc.eu</email>
+  </maintainer>
   <longdescription>
 	Qpid is Apache's implementation of the AMQP standard.
   </longdescription>
