@@ -43,15 +43,6 @@ virtual/rubygems
 doc? ( app-doc/doxygen )
 "
 
-CMAKE_SWITCHES=""
-if use linearstore || use legacystore; then
-	# Berkeley DB include directory can be in unexpected places - try to find it here
-	DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
-	if [ ! -z "$DB_INCLUDE" ]; then
-		CMAKE_SWITCHES="-DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
-	fi
-fi
-
 pkg_setup() {
 	python-single-r1_pkg_setup
 
@@ -62,6 +53,14 @@ pkg_setup() {
 }
 
 src_configure() {
+	if use linearstore || use legacystore; then
+		# Berkeley DB include directory can be in unexpected places - try to find it here
+		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
+		if [ ! -z "$DB_INCLUDE" ]; then
+			CMAKE_SWITCHES="-DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
+		fi
+	fi
+
 	local mycmakeargs=(${CMAKE_SWITCHES}
 		$(cmake-utils_use_build acl ACL)
 		$(cmake-utils_use_build amqp AMQP)
