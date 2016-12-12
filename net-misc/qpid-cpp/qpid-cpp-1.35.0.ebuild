@@ -15,7 +15,7 @@ IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl s
 SLOT="0"
 
 RDEPEND="
-net-misc/qpid-proton
+<net-misc/qpid-proton-0.15.0
 linearstore? (
 	dev-libs/libaio
 	sys-libs/db:*[cxx]
