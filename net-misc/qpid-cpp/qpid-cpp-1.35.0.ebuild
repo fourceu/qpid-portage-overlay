@@ -4,7 +4,7 @@
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils python-single-r1 user
+inherit eutils cmake-utils user
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="http://qpid.apache.org/cpp/"
@@ -43,12 +43,14 @@ doc? ( app-doc/doxygen )
 "
 
 pkg_setup() {
-	python-single-r1_pkg_setup
-
 	if use qpid-service; then
 		enewgroup qpidd
 		enewuser qpidd -1 -1 -1 "qpidd"
 	fi
+}
+
+src_prepare() {
+	epatch "${FILESDIR}/${P}-python-user-prefix.patch"
 }
 
 src_configure() {
