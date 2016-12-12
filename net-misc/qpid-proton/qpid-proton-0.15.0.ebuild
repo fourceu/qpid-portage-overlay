@@ -68,7 +68,6 @@ src_configure() {
 	fi
 
 	local mycmakeargs=( $CMAKE_SWITCHES
-		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result -Wno-error=long-long"
 		$(cmake-utils_use_build cxx WITH_CXX)
 		$(cmake-utils_use_build java JAVA)
 		$(cmake-utils_use_build ruby RUBY)
