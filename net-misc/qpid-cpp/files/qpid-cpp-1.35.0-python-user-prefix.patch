@@ -1,11 +1,10 @@
 --- management/python/CMakeLists.txt	2016-08-26 22:50:14.000000000 +0100
-+++ management/python/CMakeLists.txt	2016-12-12 18:53:25.572680421 +0000
-@@ -27,7 +27,7 @@
-                       --build-scripts=${CMAKE_CURRENT_BINARY_DIR}/bin
++++ management/python/CMakeLists.txt	2016-12-12 19:39:02.228159291 +0000
+@@ -28,6 +28,6 @@
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
  
--install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py install
-+install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py install --install-scripts=${CMAKE_INSTALL_PREFIX}/bin
-         --prefix=${CMAKE_INSTALL_PREFIX} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})")
+ install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py install
+-        --prefix=${CMAKE_INSTALL_PREFIX} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})")
++        --prefix=usr WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})")
    
                  
