@@ -15,6 +15,7 @@ IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl s
 SLOT="0"
 
 RDEPEND="
+${PYTHON_DEPS}
 <net-misc/qpid-proton-0.15.0
 linearstore? (
 	dev-libs/libaio
@@ -65,6 +66,7 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
+		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
 		$(cmake-utils_use_build acl ACL)
 		$(cmake-utils_use_build amqp AMQP)
 		$(cmake-utils_use_build doc DOCS)
