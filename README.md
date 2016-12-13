@@ -14,7 +14,7 @@ location=/var/lib/portage-repos/Apache-Qpid
 ```
 An emerge --sync will now include this repository.
 
-## Useage method 2 - layman
+## Usage method 2 - layman
 
 How to use layman: http://wiki.gentoo.org/wiki/Layman
 Essentially, install layman:
