@@ -4,7 +4,7 @@
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils user
+inherit eutils cmake-utils distutils-r1 user
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="http://qpid.apache.org/cpp/"
@@ -34,6 +34,8 @@ qpid-xml? (
 	dev-libs/xerces-c
 	dev-libs/xqilla
 	)
+!net-misc/qpid-qmf
+!net-misc/qpid-tools
 "
 
 DEPEND="${RDEPEND}
@@ -50,7 +52,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-python-user-prefix.patch"
+	epatch "${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
 }
 
 src_configure() {
@@ -83,8 +85,22 @@ src_configure() {
 	cmake-utils_src_configure
 }
 
+python_compile() {
+	cd management/python
+
+	distutils-r1_python_compile
+}
+
+python_install() {
+	cd management/python
+
+	distutils-r1_python_install
+}
+
 src_install() {
 	cmake-utils_src_install
+
+	distutils-r1_src_install
 
 	if use qpid-service; then
 		newinitd "${FILESDIR}/qpidd-init.d-gentoo-v2" qpidd
