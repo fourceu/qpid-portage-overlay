@@ -65,6 +65,7 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
+		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
 		$(cmake-utils_use_build acl ACL)
 		$(cmake-utils_use_build amqp AMQP)
 		$(cmake-utils_use_build doc DOCS)
