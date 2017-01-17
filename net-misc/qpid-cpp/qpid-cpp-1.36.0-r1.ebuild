@@ -59,7 +59,7 @@ src_prepare() {
 src_configure() {
 	if use linearstore || use legacystore; then
 		# Berkeley DB include directory can be in unexpected places - try to find it here
-		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h -quit)
+		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf "%h\n" | tail -n1)
 		if [ ! -z "$DB_INCLUDE" ]; then
 			CMAKE_SWITCHES="-DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
 		fi
