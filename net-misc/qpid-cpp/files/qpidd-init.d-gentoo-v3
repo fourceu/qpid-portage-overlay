@@ -1,0 +1,44 @@
+#!/sbin/openrc-run
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+name="Apache Qpidd"
+
+depend() {
+	need localmount #434774
+	after net bootmisc
+	provide amqp
+}
+
+start() {
+	ebegin "Starting $name"
+
+	# Ensure pid file is writable
+	pidfile=$(awk -F = '$1 == "pidfile" {print $2}' < $QPIDD_CONF)
+	if [ ! -z $pidfile ]; then
+	touch $pidfile
+		chown ${QPIDD_USER}:${QPIDD_GROUP} $pidfile
+	fi
+
+	# Ensure pid dir is writable
+	piddir=$(awk -F = '$1 == "pid-dir" {print $2}' < $QPIDD_CONF)
+	if [ ! -z piddir ]; then
+		mkdir -p $piddir
+		chown -R ${QPIDD_USER}:${QPIDD_GROUP} $piddir
+	fi
+
+	# Ensure data dir is writable
+	datadir=$(awk -F = '$1 == "data-dir" {print $2}' < $QPIDD_CONF)
+	if [ ! -z datadir ]; then
+		mkdir -p $datadir
+		chown -R ${QPIDD_USER}:${QPIDD_GROUP} $datadir
+	fi
+
+	start-stop-daemon --start --exec ${QPIDD_BIN} --user ${QPIDD_USER}:${QPIDD_GROUP} -- --config $QPIDD_CONF -d
+}
+
+stop() {
+	ebegin "Stopping $name"
+	${QPIDD_BIN} --config $QPIDD_CONF -q
+}
