@@ -1,22 +1,20 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils python-single-r1 user
+inherit eutils cmake-utils distutils-r1 user
 
 DESCRIPTION="An AMQP message broker written in C++"
-HOMEPAGE="http://qpid.apache.org/cpp/"
-SRC_URI="https://dist.apache.org/repos/dist/release/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
+HOMEPAGE="https://qpid.apache.org/cpp/"
+SRC_URI="https://archive.apache.org/dist/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
 IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml qpid-service"
 SLOT="0"
 
 RDEPEND="
->=net-misc/qpid-proton-0.8
-<net-misc/qpid-proton-0.10
+<net-misc/qpid-proton-0.17.0
 linearstore? (
 	dev-libs/libaio
 	sys-libs/db:*[cxx]
@@ -35,6 +33,8 @@ qpid-xml? (
 	dev-libs/xerces-c
 	dev-libs/xqilla
 	)
+!net-misc/qpid-qmf
+!net-misc/qpid-tools
 "
 
 DEPEND="${RDEPEND}
@@ -44,24 +44,29 @@ doc? ( app-doc/doxygen )
 "
 
 pkg_setup() {
-	python-single-r1_pkg_setup
-
 	if use qpid-service; then
 		enewgroup qpidd
 		enewuser qpidd -1 -1 -1 "qpidd"
 	fi
 }
 
+src_prepare() {
+	epatch "${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
+	epatch "${FILESDIR}/${P}-system-includes.patch"
+	epatch "${FILESDIR}/${P}-sslsocket-fd-leak-fix.patch"
+}
+
 src_configure() {
 	if use linearstore || use legacystore; then
 		# Berkeley DB include directory can be in unexpected places - try to find it here
-		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf %h)
+		DB_INCLUDE=$( find /usr/include -type f -name 'db_cxx.h' -printf "%h\n" | tail -n1)
 		if [ ! -z "$DB_INCLUDE" ]; then
 			CMAKE_SWITCHES="-DDB_CXX_INCLUDE_DIR=$DB_INCLUDE"
 		fi
 	fi
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
+		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
 		$(cmake-utils_use_build acl ACL)
 		$(cmake-utils_use_build amqp AMQP)
 		$(cmake-utils_use_build doc DOCS)
@@ -82,8 +87,22 @@ src_configure() {
 	cmake-utils_src_configure
 }
 
+python_compile() {
+	cd management/python
+
+	distutils-r1_python_compile
+}
+
+python_install() {
+	cd management/python
+
+	distutils-r1_python_install
+}
+
 src_install() {
 	cmake-utils_src_install
+
+	distutils-r1_src_install
 
 	if use qpid-service; then
 		newinitd "${FILESDIR}/qpidd-init.d-gentoo-v2" qpidd

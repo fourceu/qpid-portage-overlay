@@ -4,9 +4,7 @@
   <maintainer type="person">
     <email>chris.richardson@fourc.eu</email>
   </maintainer>
-  <longdescription>
-	Qpid is Apache's implementation of the AMQP standard.
-  </longdescription>
+  <longdescription>Qpid is Apache's implementation of the AMQP standard.</longdescription>
   <use>
     <flag name='amqp'>Add support for the AMQP 1.0 specification support in addition to AMQP 0.10</flag>
     <flag name='ha'>Add support for High Availability clusters</flag>

@@ -1,0 +1,11 @@
+--- CMakeLists.txt.orig	2017-08-11 11:16:00.627012863 +0100
++++ CMakeLists.txt	2017-08-11 11:16:15.143234611 +0100
+@@ -178,7 +178,6 @@
+ endif (ENABLE_VALGRIND)
+ 
+ add_subdirectory(proton-c)
+-add_subdirectory(examples)
+ 
+ install (FILES LICENSE README.md
+          DESTINATION ${PROTON_SHARE})
+

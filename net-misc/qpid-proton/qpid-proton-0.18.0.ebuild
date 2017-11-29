@@ -1,13 +1,12 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
 inherit eutils cmake-utils python-single-r1
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
-HOMEPAGE="http://qpid.apache.org/proton/"
+HOMEPAGE="https://qpid.apache.org/proton/"
 SRC_URI="mirror://apache/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~x86 ~amd64"
@@ -43,22 +42,20 @@ ruby? (
 "
 
 pkg_setup() {
-	python-single-r1_pkg_setup
+	if use python; then
+		python-single-r1_pkg_setup
+	fi
 
 	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
-	# We will fix this later in the src_install stage.
-}
-
-src_unpack() {
-	# This is a hack for the invalid unpack location of the source archive. Should be removed from future ebuilds.
-	unpack ${A}
-	mv "${WORKDIR}/qpid-proton-0.9.1-rc1" "${WORKDIR}/${P}"
 }
 
 src_prepare (){
+	epatch "${FILESDIR}/${P}-no-examples.patch"
 	if use python; then
 		python_fix_shebang proton-c/bindings/python
 	fi
+
+	cmake-utils_src_prepare
 }
 
 src_configure() {
@@ -72,7 +69,8 @@ src_configure() {
 	fi
 
 	local mycmakeargs=( $CMAKE_SWITCHES
-		-DCMAKE_CXX_FLAGS="-Wno-error=long-long -Wno-error=unused-result"
+		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result -std=c++11"
+		-DBUILD_CPP=off
 		$(cmake-utils_use_build cxx WITH_CXX)
 		$(cmake-utils_use_build java JAVA)
 		$(cmake-utils_use_build ruby RUBY)
@@ -82,13 +80,4 @@ src_configure() {
 	)
 
 	cmake-utils_src_configure
-}
-
-pkg_postinst() {
-	if use python; then
-		# Install the python bindings
-		cd "${WORKDIR}/${P}/proton-c/bindings/python/"
-		touch proton/cproton.i
-		"${PYTHON}" setup.py install || die "Failed to install python bindings"
-	fi
 }
