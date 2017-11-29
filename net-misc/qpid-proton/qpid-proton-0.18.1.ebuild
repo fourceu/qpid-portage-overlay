@@ -16,7 +16,7 @@ SLOT="0"
 RDEPEND="
 sys-apps/util-linux
 !libressl? ( dev-libs/openssl:* )
-libressl? ( >=dev-libs/libressl-2.6.4:* )
+libressl? ( dev-libs/libressl:* )
 sys-libs/zlib
 php? (
 	dev-lang/php:*
