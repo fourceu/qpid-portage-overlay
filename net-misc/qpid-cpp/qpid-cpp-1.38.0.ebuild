@@ -67,7 +67,6 @@ src_configure() {
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
 		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
-		-DBUILD_ACL=$(usex acl)
 		-DBUILD_AMQP=$(usex amqp)
 		-DBUILD_BINDING_PERL=$(usex perl)
 		-DBUILD_BINDING_RUBY=$(usex ruby)
