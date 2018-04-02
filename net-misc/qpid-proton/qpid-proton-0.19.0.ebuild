@@ -50,7 +50,6 @@ pkg_setup() {
 }
 
 src_prepare (){
-	epatch "${FILESDIR}/${P}-no-examples.patch"
 	if use python; then
 		python_fix_shebang proton-c/bindings/python
 	fi
