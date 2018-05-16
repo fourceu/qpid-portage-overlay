@@ -1,0 +1,39 @@
+diff --git a/src/qpid/sys/posix/SocketAddress.cpp b/src/qpid/sys/posix/SocketAddress.cpp
+index 20cce5ecc..a80cc75b9 100644
+--- a/src/qpid/sys/posix/SocketAddress.cpp
++++ b/src/qpid/sys/posix/SocketAddress.cpp
+@@ -205,11 +205,11 @@ bool SocketAddress::isComparable(const SocketAddress& hiPeer) const {
+                 return false;
+             }
+             return true;
+-        } catch (Exception) {
++        } catch (const Exception&) {
+             // failed to resolve hi
+             return false;
+         }
+-    } catch (Exception) {
++    } catch (const Exception&) {
+         // failed to resolve lo
+         return false;
+     }
+diff --git a/src/tests/AclHost.cpp b/src/tests/AclHost.cpp
+index 7d60c5a63..24614d6e7 100644
+--- a/src/tests/AclHost.cpp
++++ b/src/tests/AclHost.cpp
+@@ -39,14 +39,14 @@ QPID_AUTO_TEST_SUITE(AclHostTestSuite)
+   try { \
+     sys::SocketAddress sa("1.1.1.1", ""); \
+     sa.firstAddress(); \
+-} catch (qpid::Exception) { \
++} catch (const qpid::Exception&) { \
+     haveIPv4 = false; \
+ } \
+   bool haveIPv6(true); \
+   try { \
+     sys::SocketAddress sa("::1", ""); \
+     sa.firstAddress(); \
+-} catch (qpid::Exception) { \
++} catch (const qpid::Exception&) { \
+     haveIPv6 = false; \
+ } \
+ (void) haveIPv4; \

@@ -1,0 +1,13 @@
+diff --git a/src/qpid/log/Statement.cpp b/src/qpid/log/Statement.cpp
+index 86b069fd9..d6540c476 100644
+--- a/src/qpid/log/Statement.cpp
++++ b/src/qpid/log/Statement.cpp
+@@ -118,7 +118,7 @@ Category CategoryFileNameHints::categoryOf(const char* const fName) {
+            it  = filenameHints.hintList.begin();
+            it != filenameHints.hintList.end();
+          ++it) {
+-        if (strstr(fName, (const char* const)it->first) != 0) {
++        if (strstr(fName, it->first) != 0) {
+             return it->second;
+         }
+     }
