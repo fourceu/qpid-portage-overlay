@@ -5,7 +5,7 @@
     <email>chris.richardson@fourc.eu</email>
   </maintainer>
   <longdescription>
-	Qpid is Apache's implementation of the AMQP standard.
+    Qpid is Apache's implementation of the AMQP standard.
   </longdescription>
   <use>
   </use>
