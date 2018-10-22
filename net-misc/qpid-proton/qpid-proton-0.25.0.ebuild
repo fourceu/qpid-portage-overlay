@@ -57,9 +57,9 @@ src_configure() {
 		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result -std=c++11"
 		-DBUILD_CPP=off
 		-DBUILD_WITH_CXX="$(usex cxx)"
-		-DBUILD_WITH_GO="$(usex go)"
-		-DBUILD_WITH_RUBY="$(usex ruby)"
-		-DBUILD_WITH_PYTHON="$(usex python)"
+		-DBUILD_GO="$(usex go)"
+		-DBUILD_RUBY="$(usex ruby)"
+		-DBUILD_PYTHON="$(usex python)"
 	)
 
 	cmake-utils_src_configure
