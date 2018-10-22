@@ -6,6 +6,7 @@
   </maintainer>
   <longdescription>Qpid is Apache's implementation of the AMQP standard.</longdescription>
   <use>
+    <flag name='go'>Build Go bindings</flag>
     <flag name='qpid-test'>Build the package's automated tests</flag>
   </use>
 </pkgmetadata>
