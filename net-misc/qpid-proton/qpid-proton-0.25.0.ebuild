@@ -51,7 +51,7 @@ pkg_setup() {
 
 src_prepare (){
 	if use python; then
-		python_fix_shebang proton-c/bindings/python
+		python_fix_shebang python
 	fi
 
 	cmake-utils_src_prepare
