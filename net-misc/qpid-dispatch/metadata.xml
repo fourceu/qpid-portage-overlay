@@ -4,8 +4,7 @@
   <maintainer type="person">
     <email>chris.richardson@fourc.eu</email>
   </maintainer>
-  <longdescription>
-	A lightweight message router, written in C and built on Qpid Proton, that provides flexible and scalable interconnect between AMQP endpoints or between endpoints and brokers.
+  <longdescription>A lightweight message router, written in C and built on Qpid Proton, that provides flexible and scalable interconnect between AMQP endpoints or between endpoints and brokers.
   </longdescription>
   <use>
     <flag name='qpid-test'>Build the package's automated tests</flag>
