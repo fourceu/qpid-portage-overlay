@@ -1,20 +1,20 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python3_6 )
 inherit eutils cmake-utils distutils-r1 user
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
 SRC_URI="https://www.mirrorservice.org/sites/ftp.apache.org/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
-KEYWORDS="~x86 ~amd64"
-IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl rdma ruby sasl ssl qpid-test qpid-xml qpid-service"
+KEYWORDS="~amd64 ~x86"
+IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl qpid-service qpid-test qpid-xml rdma ruby sasl ssl"
 SLOT="0"
 
 RDEPEND="
-<=net-misc/qpid-proton-0.21.0
+net-misc/qpid-proton
 linearstore? (
 	dev-libs/libaio
 	sys-libs/db:*[cxx]
@@ -31,7 +31,6 @@ ssl? (
 sasl? ( dev-libs/cyrus-sasl )
 qpid-xml? (
 	dev-libs/xerces-c
-	dev-libs/xqilla
 	)
 !net-misc/qpid-qmf
 !net-misc/qpid-tools
