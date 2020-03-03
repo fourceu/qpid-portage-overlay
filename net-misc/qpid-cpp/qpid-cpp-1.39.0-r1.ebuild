@@ -3,6 +3,7 @@
 
 EAPI=6
 PYTHON_COMPAT=( python3_6 )
+DISTUTILS_USE_SETUPTOOLS=no
 inherit eutils cmake-utils distutils-r1 user
 
 DESCRIPTION="An AMQP message broker written in C++"
