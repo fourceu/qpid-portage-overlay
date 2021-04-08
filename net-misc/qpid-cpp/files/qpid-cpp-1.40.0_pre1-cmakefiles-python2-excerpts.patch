@@ -1,0 +1,39 @@
+diff --git a/bindings/CMakeLists.txt b/bindings/CMakeLists.txt
+index 48c6e3dc4..947e3084b 100644
+--- a/bindings/CMakeLists.txt
++++ b/bindings/CMakeLists.txt
+@@ -119,7 +119,7 @@ if (SWIG_FOUND)
+   if (BUILD_BINDING_PYTHON)
+       message(STATUS "Building Python bindings")
+       execute_process(COMMAND ${PYTHON_EXECUTABLE}
+-                      -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True, prefix='${CMAKE_INSTALL_PREFIX}')"
++                      -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True, prefix='${CMAKE_INSTALL_PREFIX}'))"
+                       OUTPUT_VARIABLE PYTHON_SITEARCH_PACKAGES
+                       OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+diff --git a/bindings/qpid/python/extra_dist/CMakeLists.txt b/bindings/qpid/python/extra_dist/CMakeLists.txt
+index 8ddd7869a..3f3bf67ce 100644
+--- a/bindings/qpid/python/extra_dist/CMakeLists.txt
++++ b/bindings/qpid/python/extra_dist/CMakeLists.txt
+@@ -31,7 +31,7 @@ INCLUDE (FindPythonLibs REQUIRED)
+ ## -------------
+ 
+ EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE}
+-  -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True, prefix='${CMAKE_INSTALL_PREFIX}')"
++  -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(True, prefix='${CMAKE_INSTALL_PREFIX}'))"
+   OUTPUT_VARIABLE PYTHON_SITEARCH_PACKAGES
+   OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+diff --git a/managementgen/CMakeLists.txt b/managementgen/CMakeLists.txt
+index 1bb8db853..f44cc1579 100644
+--- a/managementgen/CMakeLists.txt
++++ b/managementgen/CMakeLists.txt
+@@ -25,7 +25,7 @@ if (INSTALL_QMFGEN)
+     find_package(PythonInterp REQUIRED)
+ 
+     execute_process(COMMAND ${PYTHON_EXECUTABLE}
+-                    -c "from distutils.sysconfig import get_python_lib; print get_python_lib(False, prefix='${CMAKE_INSTALL_PREFIX}').replace('\\\\', '/')"
++                    -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(False, prefix='${CMAKE_INSTALL_PREFIX}').replace('\\\\', '/'))"
+                     OUTPUT_VARIABLE PYTHON_SITEARCH_PACKAGES
+                     OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
