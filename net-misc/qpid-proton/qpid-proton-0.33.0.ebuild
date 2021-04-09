@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils python-single-r1
+EAPI=7
+PYTHON_COMPAT=( python3_7 python3_8 python3_9 )
+inherit eutils cmake python-single-r1
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="https://qpid.apache.org/proton/"
@@ -21,6 +21,7 @@ sys-libs/zlib
 "
 
 DEPEND="${RDEPEND}
+dev-util/ninja
 go? (
 	dev-lang/swig
 	)
@@ -40,12 +41,14 @@ pkg_setup() {
 	# Don't use the SYSINSTALL_BINDINGS[<lang>] switches here as the build will then attempt to write to the system root rather than the build image.
 }
 
-src_prepare (){
+src_prepare () {
+	eapply_user
+
 	if use python; then
 		python_fix_shebang python
 	fi
 
-	cmake-utils_src_prepare
+	cmake_src_prepare
 }
 
 src_configure() {
@@ -54,7 +57,7 @@ src_configure() {
 	fi
 
 	local mycmakeargs=( $CMAKE_SWITCHES
-		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result -std=c++11"
+		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result"
 		-DBUILD_CPP=off
 		-DBUILD_WITH_CXX="$(usex cxx)"
 		-DBUILD_GO="$(usex go)"
@@ -62,5 +65,5 @@ src_configure() {
 		-DBUILD_PYTHON="$(usex python)"
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
