@@ -1,10 +1,10 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python3_6 )
+EAPI=7
+PYTHON_COMPAT=( python3_7 python3_8 python3_9 )
 DISTUTILS_USE_SETUPTOOLS=no
-inherit eutils cmake-utils distutils-r1 user
+inherit eutils cmake distutils-r1
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
@@ -15,6 +15,7 @@ IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl qpid-service qpi
 SLOT="0"
 
 RDEPEND="
+qpid-service? ( acct-user/qpidd )
 net-misc/qpid-proton
 linearstore? (
 	dev-libs/libaio
@@ -38,22 +39,16 @@ qpid-xml? (
 "
 
 DEPEND="${RDEPEND}
+dev-util/ninja
 dev-libs/boost
 virtual/rubygems
 doc? ( app-doc/doxygen )
 "
 
-pkg_setup() {
-	if use qpid-service; then
-		enewgroup qpidd
-		enewuser qpidd -1 -1 -1 "qpidd"
-	fi
-}
-
 src_prepare() {
 	epatch "${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
 
-	cmake-utils_src_prepare
+	cmake_src_prepare
 }
 
 src_configure() {
@@ -66,7 +61,7 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
-		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
+		-DENABLE_WARNING_ERROR=off
 		-DBUILD_AMQP=$(usex amqp)
 		-DBUILD_BINDING_PERL=$(usex perl)
 		-DBUILD_BINDING_RUBY=$(usex ruby)
@@ -83,7 +78,7 @@ src_configure() {
 		-DBUILD_XML=$(usex qpid-xml)
 	)
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 python_compile() {
@@ -99,7 +94,7 @@ python_install() {
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 
 	distutils-r1_src_install
 

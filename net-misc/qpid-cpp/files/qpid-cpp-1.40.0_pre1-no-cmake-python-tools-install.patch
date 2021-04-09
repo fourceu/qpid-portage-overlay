@@ -1,0 +1,12 @@
+diff -ur qpid-cpp-1.35.0/management/python/CMakeLists.txt qpid-cpp-1.35.0-modfiied/management/python/CMakeLists.txt
+--- qpid-cpp-1.35.0/management/python/CMakeLists.txt	2016-08-26 22:50:14.000000000 +0100
++++ qpid-cpp-1.35.0-modfiied/management/python/CMakeLists.txt	2016-12-12 23:57:55.253703524 +0000
+@@ -26,8 +26,3 @@
+                       --build-lib=${CMAKE_CURRENT_BINARY_DIR}/lib
+                       --build-scripts=${CMAKE_CURRENT_BINARY_DIR}/bin
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+-
+-install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} setup.py install
+-        --prefix=${CMAKE_INSTALL_PREFIX} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})")
+-  
+-                
