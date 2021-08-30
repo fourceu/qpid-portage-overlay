@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
-PYTHON_COMPAT=( python2_7 )
-inherit eutils python-r1 distutils-r1
+EAPI=7
+PYTHON_COMPAT=( python3_{8,9} )
+inherit eutils python-any-r1
 
 DESCRIPTION="Python client implementation for Apache Qpid"
 HOMEPAGE="https://qpid.apache.org/components/messaging-api"
@@ -16,4 +16,5 @@ DEPEND="
 "
 
 RDEPEND="${DEPEND}
+dev-lang/python:2.7
 "

@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python3_7 python3_8 python3_9 )
+PYTHON_COMPAT=( python2_7 python3_{8,9} )
 DISTUTILS_USE_SETUPTOOLS=no
-inherit eutils cmake distutils-r1 git-r3
+inherit eutils distutils-r1 git-r3 cmake
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
@@ -18,6 +18,7 @@ EGIT_COMMIT="8029971c328020221d5bbc548bb75bb6442c4f75"
 
 RDEPEND="
 qpid-service? ( acct-user/qpidd )
+dev-lang/python:2.7
 net-misc/qpid-proton
 linearstore? (
 	dev-libs/libaio
@@ -48,13 +49,8 @@ doc? ( app-doc/doxygen )
 "
 
 PATCHES=(
-	"${FILESDIR}/${P}-cmakefiles-python2-excerpts.patch"
 	"${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
 )
-
-src_prepare() {
-	cmake_src_prepare
-}
 
 src_configure() {
 	if use linearstore || use legacystore; then
@@ -67,6 +63,7 @@ src_configure() {
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
 		-DENABLE_WARNING_ERROR=off
+		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
 		-DBUILD_AMQP=$(usex amqp)
 		-DBUILD_BINDING_PERL=$(usex perl)
 		-DBUILD_BINDING_RUBY=$(usex ruby)
@@ -99,7 +96,7 @@ python_install() {
 }
 
 src_install() {
-	cmake_src_install
+	cmake-utils_src_install
 
 	distutils-r1_src_install
 
