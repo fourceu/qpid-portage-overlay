@@ -7,7 +7,7 @@ inherit eutils cmake python-single-r1
 
 DESCRIPTION="A high-performance, lightweight, AMQP messaging library."
 HOMEPAGE="https://qpid.apache.org/proton/"
-SRC_URI="https://archive.apache.org/dist/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz"
+SRC_URI="mirror://apache/qpid/proton/${PV}/qpid-proton-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64 ~x86"
 IUSE="cxx go python qpid-test ruby"
@@ -57,11 +57,9 @@ src_configure() {
 
 	local mycmakeargs=( $CMAKE_SWITCHES
 		-DCMAKE_CXX_FLAGS="-Wno-error=unused-result"
-		-DBUILD_CPP=off
-		-DBUILD_WITH_CXX="$(usex cxx)"
+		-DBUILD_CPP="$(usex cxx)"
 		-DBUILD_GO="$(usex go)"
-		-DBUILD_RUBY="$(usex ruby)"
-		-DBUILD_PYTHON="$(usex python)"
+		-DBUILD_TESTING="$(usex qpid-test)"
 	)
 
 	cmake_src_configure
