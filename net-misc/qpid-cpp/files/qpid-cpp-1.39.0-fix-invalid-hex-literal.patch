@@ -1,0 +1,13 @@
+diff --git a/bindings/qpid/python/qpid_messaging.i b/bindings/qpid/python/qpid_messaging.i
+index aee993023..68b63a316 100644
+--- a/bindings/qpid/python/qpid_messaging.i
++++ b/bindings/qpid/python/qpid_messaging.i
+@@ -276,7 +276,7 @@ QPID_EXCEPTION(UnauthorizedAccess, SessionError)
+     AMQP_PORT = 5672
+     AMQPS_PORT = 5671
+ 
+-    UNLIMITED = Constant("UNLIMITED", 0xFFFFFFFFL)
++    UNLIMITED = Constant("UNLIMITED", 0xFFFFFFFF)
+ 
+     REJECTED = Constant("REJECTED")
+     RELEASED = Constant("RELEASED")

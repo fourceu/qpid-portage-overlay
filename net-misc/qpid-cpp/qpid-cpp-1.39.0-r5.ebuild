@@ -1,21 +1,24 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-PYTHON_COMPAT=( python2_7 python3_9 )
-DISTUTILS_USE_SETUPTOOLS=no
-inherit eutils cmake-utils distutils-r1 user
-
+EAPI=7
+PYTHON_COMPAT=( python3_{8..11} )
+DISTUTILS_USE_SETUPTOOLS=bdepend
+#DISTUTILS_USE_PEP517=setuptools
+inherit cmake distutils-r1 eutils git-r3
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
-SRC_URI="https://www.mirrorservice.org/sites/ftp.apache.org/qpid/cpp/${PV}/qpid-cpp-${PV}.tar.gz"
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64 ~x86"
 IUSE="acl amqp doc ha legacystore linearstore msclfs mssql perl qpid-service qpid-test qpid-xml rdma ruby sasl ssl"
 SLOT="0"
 
+EGIT_REPO_URI="https://github.com/apache/qpid-cpp.git"
+EGIT_COMMIT="8029971c328020221d5bbc548bb75bb6442c4f75"
+
 RDEPEND="
-dev-lang/python:2.7
+dev-lang/python
+qpid-service? ( acct-user/qpidd )
 net-misc/qpid-proton
 linearstore? (
 	dev-libs/libaio
@@ -36,25 +39,27 @@ qpid-xml? (
 	)
 !net-misc/qpid-qmf
 !net-misc/qpid-tools
+net-misc/qpid-python
 "
 
 DEPEND="${RDEPEND}
+dev-util/ninja
 dev-libs/boost
 virtual/rubygems
 doc? ( app-doc/doxygen )
 "
 
-pkg_setup() {
-	if use qpid-service; then
-		enewgroup qpidd
-		enewuser qpidd -1 -1 -1 "qpidd"
-	fi
-}
+PATCHES=(
+	"${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
+	"${FILESDIR}/${P}-fix-python2-in-cmake.patch"
+	"${FILESDIR}/${P}-fix-invalid-hex-literal.patch"
+	"${FILESDIR}/${P}-fix-installing-missing-compiled-bindings.patch"
+)
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-no-cmake-python-tools-install.patch"
-
-	cmake-utils_src_prepare
+	cmake_src_prepare
+	unset PATCHES
+	distutils-r1_src_prepare
 }
 
 src_configure() {
@@ -68,7 +73,6 @@ src_configure() {
 
 	local mycmakeargs=(${CMAKE_SWITCHES}
 		-DENABLE_WARNING_ERROR=off
-		-DPYTHON_EXECUTABLE=$(which python2) # Override system default, which is probably python 3
 		-DBUILD_AMQP=$(usex amqp)
 		-DBUILD_BINDING_PERL=$(usex perl)
 		-DBUILD_BINDING_RUBY=$(usex ruby)
@@ -85,25 +89,20 @@ src_configure() {
 		-DBUILD_XML=$(usex qpid-xml)
 	)
 
-	cmake-utils_src_configure
+	2to3 -w management
+	find management/python/bin ! -name *.bat | xargs 2to3 -w
+
+	cmake_src_configure
+	default
 }
 
-python_compile() {
-	cd management/python
-
-	distutils-r1_python_compile
-}
-
-python_install() {
-	cd management/python
-
-	distutils-r1_python_install
+distutils-r1_python_compile() {
+	cd "${WORKDIR}/${P}/management/python"
+	default
 }
 
 src_install() {
-	cmake-utils_src_install
-
-	distutils-r1_src_install
+	cmake_src_install
 
 	if use qpid-service; then
 		newinitd "${FILESDIR}/qpidd-init.d-gentoo-v3" qpidd
@@ -115,4 +114,22 @@ src_install() {
 		insinto "/etc"
 		newins "${FILESDIR}/qpidd.conf.default-gentoo-v1" "qpidd.conf"
 	fi
+
+	python_version=$(python --version | awk -F" " '{print $2}' | awk -F. '{print $1"."$2}')
+	EPYTHON="python${python_version}"
+	cd "${WORKDIR}/${P}/management/python"
+	esetup.py install --root="${D}"
+
+	for f in qpid-stat qpid-ha qpid-tool qpid-config qpid-printevents qpid-config qpid-route qpid-queue-stats; do
+	#	dobin ${WORKDIR}/${P}/management/python/bin/$f
+		dosym /usr/lib/python-exec/${EPYTHON}/$f /usr/bin/$f
+	done
+	default
 }
+
+python_install() {
+	cd "${WORKDIR}/${P}/management/python"
+	esetup.py install --root="${D}"
+	default
+}
+
