@@ -3,9 +3,7 @@
 
 EAPI=7
 PYTHON_COMPAT=( python3_{8..11} )
-DISTUTILS_USE_SETUPTOOLS=bdepend
-#DISTUTILS_USE_PEP517=setuptools
-inherit cmake distutils-r1 eutils git-r3
+inherit cmake eutils git-r3
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
 LICENSE="Apache-2.0"
@@ -39,7 +37,6 @@ qpid-xml? (
 	)
 !net-misc/qpid-qmf
 !net-misc/qpid-tools
-net-misc/qpid-python
 "
 
 DEPEND="${RDEPEND}
@@ -55,12 +52,6 @@ PATCHES=(
 	"${FILESDIR}/${P}-fix-invalid-hex-literal.patch"
 	"${FILESDIR}/${P}-fix-installing-missing-compiled-bindings.patch"
 )
-
-src_prepare() {
-	cmake_src_prepare
-	unset PATCHES
-	distutils-r1_src_prepare
-}
 
 src_configure() {
 	if use linearstore || use legacystore; then
@@ -89,16 +80,7 @@ src_configure() {
 		-DBUILD_XML=$(usex qpid-xml)
 	)
 
-	2to3 -w management
-	find management/python/bin ! -name *.bat | xargs 2to3 -w
-
 	cmake_src_configure
-	default
-}
-
-distutils-r1_python_compile() {
-	cd "${WORKDIR}/${P}/management/python"
-	default
 }
 
 src_install() {
@@ -114,22 +96,5 @@ src_install() {
 		insinto "/etc"
 		newins "${FILESDIR}/qpidd.conf.default-gentoo-v1" "qpidd.conf"
 	fi
-
-	python_version=$(python --version | awk -F" " '{print $2}' | awk -F. '{print $1"."$2}')
-	EPYTHON="python${python_version}"
-	cd "${WORKDIR}/${P}/management/python"
-	esetup.py install --root="${D}"
-
-	for f in qpid-stat qpid-ha qpid-tool qpid-config qpid-printevents qpid-config qpid-route qpid-queue-stats; do
-	#	dobin ${WORKDIR}/${P}/management/python/bin/$f
-		dosym /usr/lib/python-exec/${EPYTHON}/$f /usr/bin/$f
-	done
-	default
-}
-
-python_install() {
-	cd "${WORKDIR}/${P}/management/python"
-	esetup.py install --root="${D}"
-	default
 }
 
