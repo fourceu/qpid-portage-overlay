@@ -1,0 +1,26 @@
+diff --git a/bindings/qpid/python/CMakeLists.txt b/bindings/qpid/python/CMakeLists.txt
+index fc251ba01..af56493ea 100644
+--- a/bindings/qpid/python/CMakeLists.txt
++++ b/bindings/qpid/python/CMakeLists.txt
+@@ -48,8 +48,6 @@ install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} -m py_compile qpid_me
+ install(CODE "execute_process(COMMAND ${PYTHON_EXECUTABLE} -O -m py_compile qpid_messaging.py
+                               WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.py
+-              ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.pyc
+-              ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.pyo
+         DESTINATION ${PYTHON_SITEARCH_PACKAGES}
+         COMPONENT ${QPID_COMPONENT_CLIENT}
+         )
+diff --git a/bindings/qpid/python/extra_dist/CMakeLists.txt b/bindings/qpid/python/extra_dist/CMakeLists.txt
+index 3f3bf67ce..2499a68cf 100644
+--- a/bindings/qpid/python/extra_dist/CMakeLists.txt
++++ b/bindings/qpid/python/extra_dist/CMakeLists.txt
+@@ -76,8 +76,6 @@ INCLUDE_DIRECTORIES (
+ )
+ 
+ INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.py
+-               ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.pyc
+-               ${CMAKE_CURRENT_BINARY_DIR}/qpid_messaging.pyo
+   DESTINATION ${PYTHON_SITEARCH_PACKAGES})
+ 
+ INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/_qpid_messaging_python.so
