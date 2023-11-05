@@ -3,10 +3,10 @@
 
 #EAPI=7
 EAPI=8
-PYTHON_COMPAT=( python2_7 python3_{8,9} )
+PYTHON_COMPAT=( python2_7 python3_{8,9,10} )
 DISTUTILS_USE_SETUPTOOLS=no
 #inherit eutils distutils-r1 git-r3 cmake
-inherit eutils distutils-r1 git-r3 cmake
+inherit distutils-r1 git-r3 cmake
 
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
