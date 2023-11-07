@@ -4,6 +4,7 @@
 EAPI=8
 PYTHON_COMPAT=( python3_{8..11} )
 inherit cmake git-r3
+
 DESCRIPTION="An AMQP message broker written in C++"
 HOMEPAGE="https://qpid.apache.org/cpp/"
 LICENSE="Apache-2.0"
