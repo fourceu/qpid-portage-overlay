@@ -3,8 +3,10 @@
 # $Id$
 
 EAPI=8
-PYTHON_COMPAT=( python2_7 )
-inherit cmake-utils python-single-r1
+#PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python2_7 python3_10 )
+#inherit cmake-utils python-single-r1
+inherit cmake python-single-r1
 
 DESCRIPTION="A lightweight message router that provides interconnect between AMQP endpoints"
 HOMEPAGE="http://qpid.apache.org/dispatch/"

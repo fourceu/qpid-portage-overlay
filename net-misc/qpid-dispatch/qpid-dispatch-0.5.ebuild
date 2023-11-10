@@ -2,9 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-PYTHON_COMPAT=( python2_7 )
-inherit eutils cmake-utils python-single-r1
+#EAPI=5
+EAPI=8
+#PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python2_7 python3_10 )
+#inherit eutils cmake-utils python-single-r1
+inherit cmake python-single-r1
 
 DESCRIPTION="A lightweight message router that provides interconnect between AMQP endpoints"
 HOMEPAGE="http://qpid.apache.org/dispatch/"
