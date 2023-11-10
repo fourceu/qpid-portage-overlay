@@ -3,7 +3,7 @@
 
 #EAPI=7
 EAPI=8
-PYTHON_COMPAT=( python3_7 python3_8 python3_9 )
+PYTHON_COMPAT=( python3_7 python3_8 python3_9 python3_10)
 #inherit eutils cmake python-single-r1
 inherit cmake python-single-r1
 
